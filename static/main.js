@@ -8,17 +8,19 @@ async function getChampData () {
     }
 }
 
-async function getChampArt (champ) {
-    imageName = champ.image.full;
-    let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + imageName);
-    if (response.ok) {
-        let image = await response.blob();
-    } else {
-        alert("Could not load champion image. Refresh to try again.")
-    }
-    console.log(image);
+function getChampArt (champ) {
+    let imageLink = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ.id + "_0.jpg";
+    splash = document.getElementById("champ-splash");
+    splash.src = imageLink;
+    console.log(imageLink);
 }
 
+function setChampData (champ) {
+    let champNameEl = document.getElementById("champion-name");
+    let champTitleEl = document.getElementById("champion-title");
+    champNameEl.textContent = champ.name;
+    champTitleEl.textContent = champ.title;
+}
 
 function randChamp () {
     getChampData().then(champData => {
@@ -27,6 +29,7 @@ function randChamp () {
         let champ = champArray[rand];
         console.log(champ);
         getChampArt(champ);
+        setChampData(champ);
     });
 }
 

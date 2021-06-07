@@ -1,0 +1,54 @@
+
+:root {
+    --title-font: 'Mate SC', serif;
+    --text-font:  'Merriweather', serif;
+    --main-text-color: tan;
+  }
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0px; 
+    background: #0e0e0e; 
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.champions-container {
+    height: 75%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+#champ-splash {
+    width: 100%;
+    height: auto;
+    border: 5px solid tan;
+}
+
+#champion-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    color: var(--main-text-color);
+    font-size: 5rem;
+}
+
+#champion-name {
+    font-family: var(--title-font);
+    font-size: 7rem;
+}
+
+#champion-title {
+    font-family: var(--text-font);
+    
+}
