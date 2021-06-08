@@ -15,7 +15,7 @@ body {
     background: #0e0e0e; 
     height: 100%;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
 }
 
@@ -24,7 +24,7 @@ body {
     width: 60%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: start;
 }
 
@@ -37,9 +37,9 @@ body {
 #champion-info {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start;
     color: var(--main-text-color);
     font-size: 5rem;
 }
@@ -51,6 +51,7 @@ body {
 
 #champion-title {
     font-family: var(--text-font);
+    text-transform:capitalize;
     
 }
 

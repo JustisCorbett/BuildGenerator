@@ -53,10 +53,15 @@ async function getItemData () {
         let items = {};
         items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
         items.normal = filteredItemArray.filter(item => item.hasOwnProperty("into") === false);
+        console.log(items);
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
     }
+}
+
+function randBuild (champ, items) {
+
 }
 
 window.onload = () => {
