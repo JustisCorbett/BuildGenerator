@@ -50,8 +50,10 @@ async function getItemData () {
             (item.tags.includes("Lane") === false) &&
             (item.tags.includes("Jungle") === false)
         );
-        console.log(filteredItemArray);
-        return itemData;
+        let items = {};
+        items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
+        items.normal = filteredItemArray.filter(item => item.hasOwnProperty("into") === false);
+        return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
     }
