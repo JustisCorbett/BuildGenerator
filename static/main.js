@@ -51,10 +51,6 @@ async function getItemData () {
             (item.tags.includes("Jungle") === false)
         );
         console.log(filteredItemArray);
-        let laneFilter = filteredItemArray.filter(item =>
-            (item.tags.includes("Lane"))
-            );
-        console.log(laneFilter);
         return itemData;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
