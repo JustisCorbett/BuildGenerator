@@ -30,9 +30,39 @@ function randChamp () {
         console.log(champ);
         getChampArt(champ);
         setChampData(champ);
+        return champ;
     });
 }
 
+async function getItemData () {
+    let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/item.json");
+    if (response.ok) {
+        const itemData = await response.json();
+        let itemArray = Object.values(itemData.data);
+        let filteredItemArray = itemArray.filter(item =>
+            (item.hasOwnProperty("requiredAlly") === false) &&
+            (item.hasOwnProperty("requiredChampion") === false) &&
+            (item.maps[11] == true) &&
+            (item.hasOwnProperty("inStore") === false) &&
+            (item.tags.includes("Consumable") === false) &&
+            (item.tags.includes("Trinket") === false) &&
+            ((item.hasOwnProperty("into") === false) || (item.into[0] >= 7000)) &&
+            (item.tags.includes("Lane") === false) &&
+            (item.tags.includes("Jungle") === false)
+        );
+        console.log(filteredItemArray);
+        let laneFilter = filteredItemArray.filter(item =>
+            (item.tags.includes("Lane"))
+            );
+        console.log(laneFilter);
+        return itemData;
+    } else { 
+        alert("Could not get Item data. Refresh to try again.")
+    }
+}
+
 window.onload = () => {
-    randChamp();
+    let champ = randChamp();
+    let items = getItemData();
+    randBuild(champ, items);
 }
