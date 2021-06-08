@@ -3,6 +3,7 @@
     --title-font: 'Mate SC', serif;
     --text-font:  'Merriweather', serif;
     --main-text-color: tan;
+    font-size: 10px;
   }
 
 html {
@@ -19,8 +20,8 @@ body {
 }
 
 .champions-container {
-    height: 75%;
-    width: 75%;
+    height: 60%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,4 +52,22 @@ body {
 #champion-title {
     font-family: var(--text-font);
     
+}
+
+@media only screen and (max-width: 1000px) {
+    :root {
+        font-size: 8px;
+    }
+
+    .champions-container {
+        height: 75%;
+        width: 75%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    :root {
+        font-size: 6px;
+    }
+
 }
