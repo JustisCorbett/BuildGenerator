@@ -8,14 +8,11 @@ async function getChampData () {
     }
 }
 
-function getChampArt (champ) {
+function renderChampData (champ) {
     let imageLink = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ.id + "_0.jpg";
     splash = document.getElementById("champ-splash");
     splash.src = imageLink;
     console.log(imageLink);
-}
-
-function setChampData (champ) {
     let champNameEl = document.getElementById("champion-name");
     let champTitleEl = document.getElementById("champion-title");
     champNameEl.textContent = champ.name;
@@ -27,9 +24,6 @@ async function randChamp () {
         let rand = (Math.floor(Math.random() * Object.keys(champData).length));
         let champArray = Object.values(champData);
         let champ = champArray[rand];
-        console.log(champ);
-        getChampArt(champ);
-        setChampData(champ);
         return champ;
     });
 }
@@ -59,19 +53,39 @@ async function getItemData () {
     }
 }
 
-async function randBuild () {
-    let champ = await randChamp();
-    let items = await getItemData();
+function randBuild (champ, items) {
+    let build = [];
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
         items.normal = items.normal.filter(item =>
              (item.tags.includes("Mana") === false) &&
              (item.tags.includes("ManaRegen") === false)
              );
-    }
+    };
+    for (i = 0; i < 6; i++) {
+        console.log(i);
+        if (i === 0) {
+            let rand = (Math.floor(Math.random() * items.mythic.length))
+            build.push(items.mythic[rand]);
+        } else {
+            let rand = (Math.floor(Math.random() * items.normal.length))
+            build.push(items.normal[rand]);
+        };
+    };
+    return build;
+}
+
+async function createBuild () {
+    let champ = await randChamp();
+    console.log(champ);
+    renderChampData(champ);
+    
+    let items = await getItemData();
     console.log(items);
+    build = randBuild(champ, items);
+    console.log(build);
 }
 
 window.onload = () => {
-    randBuild();
+    createBuild();
 }
