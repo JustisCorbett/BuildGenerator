@@ -41,7 +41,7 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     color: var(--main-text-color);
-    font-size: 5rem;
+    font-size: 4rem;
 }
 
 #champion-name {

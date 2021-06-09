@@ -22,8 +22,8 @@ function setChampData (champ) {
     champTitleEl.textContent = champ.title;
 }
 
-function randChamp () {
-    getChampData().then(champData => {
+async function randChamp () {
+    return getChampData().then(champData => {
         let rand = (Math.floor(Math.random() * Object.keys(champData).length));
         let champArray = Object.values(champData);
         let champ = champArray[rand];
@@ -53,19 +53,25 @@ async function getItemData () {
         let items = {};
         items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
         items.normal = filteredItemArray.filter(item => item.hasOwnProperty("into") === false);
-        console.log(items);
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
     }
 }
 
-function randBuild (champ, items) {
-
+async function randBuild () {
+    let champ = await randChamp();
+    let items = await getItemData();
+    if (champ.partype !== "Mana") {
+        items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
+        items.normal = items.normal.filter(item =>
+             (item.tags.includes("Mana") === false) &&
+             (item.tags.includes("ManaRegen") === false)
+             );
+    }
+    console.log(items);
 }
 
 window.onload = () => {
-    let champ = randChamp();
-    let items = getItemData();
-    randBuild(champ, items);
+    randBuild();
 }
