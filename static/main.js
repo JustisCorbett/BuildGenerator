@@ -1,3 +1,8 @@
+function randNum (max) {
+    let rand = (Math.floor(Math.random() * max));
+    return rand;
+}
+
 async function getChampData () {
     let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/11.11.1/data/en_US/champion.json");
     if (response.ok) {
@@ -21,7 +26,7 @@ function renderChampData (champ) {
 
 async function randChamp () {
     return getChampData().then(champData => {
-        let rand = (Math.floor(Math.random() * Object.keys(champData).length));
+        let rand = randNum(Object.keys(champData).length);
         let champArray = Object.values(champData);
         let champ = champArray[rand];
         return champ;
@@ -46,7 +51,11 @@ async function getItemData () {
         );
         let items = {};
         items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
-        items.normal = filteredItemArray.filter(item => item.hasOwnProperty("into") === false);
+        items.normal = filteredItemArray.filter(item => 
+            (item.hasOwnProperty("into") === false) &&
+            (item.tags.includes("Boots") === false)
+            );
+        items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
@@ -65,10 +74,18 @@ function randBuild (champ, items) {
     for (i = 0; i < 6; i++) {
         console.log(i);
         if (i === 0) {
-            let rand = (Math.floor(Math.random() * items.mythic.length))
+            let rand = randNum(items.mythic.length);
             build.push(items.mythic[rand]);
+
+            
+        } else if (i === 1) {
+            let rand = randNum(items.boots.length);
+            build.push(items.boots[rand]);
         } else {
-            let rand = (Math.floor(Math.random() * items.normal.length))
+            let rand = 0
+            do {
+                rand = randNum(items.normal.length);
+            } while (build.includes(items.normal[rand]))
             build.push(items.normal[rand]);
         };
     };

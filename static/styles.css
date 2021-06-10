@@ -61,6 +61,10 @@ body {
     justify-content: space-evenly;
 }
 
+.item {
+    border: 2px solid tan;
+}
+
 @media only screen and (max-width: 1000px) {
     :root {
         font-size: 8px;
