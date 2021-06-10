@@ -75,15 +75,31 @@ function randBuild (champ, items) {
     return build;
 }
 
+function renderBuildData(build) {
+    let blankEl = document.getElementsByClassName("item");
+    build.forEach(item => {
+        let clonedEl = blankEl[0].cloneNode(true);
+        console.log(clonedEl);
+        let clonedChildren = clonedEl.children;
+        console.log(clonedEl.children)
+        for (i = 0; i < clonedChildren.length; i++) {
+            if (clonedChildren[i].classList.contains("item-image")) {
+                clonedChildren[i].src = "http://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
+            }
+        }
+        document.getElementById("item-container").appendChild(clonedEl);
+    });
+}
+
 async function createBuild () {
     let champ = await randChamp();
     console.log(champ);
     renderChampData(champ);
-    
     let items = await getItemData();
     console.log(items);
     build = randBuild(champ, items);
     console.log(build);
+    renderBuildData(build);
 }
 
 window.onload = () => {

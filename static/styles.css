@@ -55,6 +55,12 @@ body {
     
 }
 
+#item-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 @media only screen and (max-width: 1000px) {
     :root {
         font-size: 8px;
