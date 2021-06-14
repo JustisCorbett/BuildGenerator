@@ -35,6 +35,7 @@ async function randChamp () {
 
 async function getItemData () {
     let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/item.json");
+    let tags = [];
     if (response.ok) {
         const itemData = await response.json();
         let itemArray = Object.values(itemData.data);
@@ -49,20 +50,35 @@ async function getItemData () {
             (item.tags.includes("Lane") === false) &&
             (item.tags.includes("Jungle") === false)
         );
-        let items = {};
-        items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
-        items.normal = filteredItemArray.filter(item => 
+        filteredItemArray.forEach(item => {
+            item.tags.forEach(tag => {
+                tags.push(tag);
+            });
+        });
+        let items = {items: [], uniqueTags: []};
+        tags.filter(tag => {
+            (tag.includes("Boots") === false)
+        });
+        items.uniqueTags = [...new Set(tags)];
+        items.items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
+        items.items.normal = filteredItemArray.filter(item => 
             (item.hasOwnProperty("into") === false) &&
             (item.tags.includes("Boots") === false)
             );
-        items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
+        items.items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
+        // let filteredTags = {
+        //     attack: ["Damage", "AttackSpeed", "CriticalStrike", "ArmorPenetration", "Lifesteal"],
+        //     defense: ["Health", "Armor", "HealthRegen", "SpellBlock"],
+        //     magic: ["SpellDamage", "MagicPenetration", "SpellVamp", "OnHit"]
+        // }
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
     }
 }
 
-function randBuild (champ, items) {
+function randBuild (champ, items, uniqueTags) {
+    let tags = [];
     let build = [];
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
@@ -71,8 +87,11 @@ function randBuild (champ, items) {
              (item.tags.includes("ManaRegen") === false)
              );
     };
+    for (i = 0; i < 3; i++) {
+        let rand = randNum(uniqueTags.length);
+        tags.push(uniqueTags[rand]);
+    }
     for (i = 0; i < 6; i++) {
-        console.log(i);
         if (i === 0) {
             let rand = randNum(items.mythic.length);
             build.push(items.mythic[rand]);
@@ -89,6 +108,7 @@ function randBuild (champ, items) {
             build.push(items.normal[rand]);
         };
     };
+    console.log(tags)
     return build;
 }
 
@@ -114,7 +134,7 @@ async function createBuild () {
     renderChampData(champ);
     let items = await getItemData();
     console.log(items);
-    build = randBuild(champ, items);
+    build = randBuild(champ, items.items, items.uniqueTags);
     console.log(build);
     renderBuildData(build);
 }
