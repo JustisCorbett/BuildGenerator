@@ -52,13 +52,11 @@ async function getItemData () {
         );
         filteredItemArray.forEach(item => {
             item.tags.forEach(tag => {
+                if (tag != "Boots")
                 tags.push(tag);
             });
         });
         let items = {items: [], uniqueTags: []};
-        tags.filter(tag => {
-            (tag.includes("Boots") === false)
-        });
         items.uniqueTags = [...new Set(tags)];
         items.items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
         items.items.normal = filteredItemArray.filter(item => 
@@ -79,32 +77,52 @@ async function getItemData () {
 
 function randBuild (champ, items, uniqueTags) {
     let tags = [];
+    let mythicTags = [];
+    let bootTags = [];
+    let normalTags = [];
     let build = [];
+    let rand = 0
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
         items.normal = items.normal.filter(item =>
-             (item.tags.includes("Mana") === false) &&
-             (item.tags.includes("ManaRegen") === false)
-             );
+            (item.tags.includes("Mana") === false) &&
+            (item.tags.includes("ManaRegen") === false)
+        );
+        [...uniqueTags].filter((tag =>
+            (tag != "Mana")) &&
+            (tag != "ManaRegen")
+        );
     };
-    for (i = 0; i < 3; i++) {
-        let rand = randNum(uniqueTags.length);
+    for (i = 0; i < 1; i++) {
+        do {
+            rand = randNum(uniqueTags.length);
+        } while (tags.includes(uniqueTags[rand]))
         tags.push(uniqueTags[rand]);
     }
     for (i = 0; i < 6; i++) {
         if (i === 0) {
-            let rand = randNum(items.mythic.length);
+            //if (items.mythic.forEach())
+            do {
+                rand = randNum(items.mythic.length);
+            } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
             build.push(items.mythic[rand]);
-
-            
         } else if (i === 1) {
-            let rand = randNum(items.boots.length);
-            build.push(items.boots[rand]);
+            items.boots.forEach(boot => {
+                bootTags.push(boot.tags);
+            })
+            if (tags.some(tag => bootTags.includes(tag))) {
+                do {
+                    rand = randNum(items.boots.length);
+                } while (items.boots[rand].tags.some(tag => tags.includes(tag)) === false)
+                build.push(items.boots[rand]);
+            } else {
+                let rand = randNum(items.boots.length);
+                build.push(items.boots[rand]);
+            }
         } else {
-            let rand = 0
             do {
                 rand = randNum(items.normal.length);
-            } while (build.includes(items.normal[rand]))
+            } while (build.includes(items.normal[rand]) || items.normal[rand].tags.some(tag => tags.includes(tag)) === false)
             build.push(items.normal[rand]);
         };
     };
@@ -116,9 +134,7 @@ function renderBuildData(build) {
     let blankEl = document.getElementsByClassName("item");
     build.forEach(item => {
         let clonedEl = blankEl[0].cloneNode(true);
-        console.log(clonedEl);
         let clonedChildren = clonedEl.children;
-        console.log(clonedEl.children)
         for (i = 0; i < clonedChildren.length; i++) {
             if (clonedChildren[i].classList.contains("item-image")) {
                 clonedChildren[i].src = "http://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
