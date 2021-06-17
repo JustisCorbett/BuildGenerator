@@ -75,6 +75,18 @@ async function getItemData () {
     }
 }
 
+function countTags (arr1, arr2) {
+    let count = 0;
+    for (let i = 0; i < arr1.length; i++) {
+        for (let j = 0; j < arr2.length; j++) {
+            if (arr1[i] === arr2[j]) {
+                count = count + 1;
+            }
+        }
+    }
+    return count;
+}
+
 function randBuild (champ, items, uniqueTags) {
     uniqueTags = [...uniqueTags];
     let tags = [];
@@ -82,6 +94,7 @@ function randBuild (champ, items, uniqueTags) {
     let bootTags = [];
     let build = [];
     let rand = 0;
+    let count = 0;
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
         items.normal = items.normal.filter(item =>
@@ -94,26 +107,25 @@ function randBuild (champ, items, uniqueTags) {
             (tag != "ManaRegen")
         );
     };
-    for (i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i++) {
         do {
             rand = randNum(uniqueTags.length);
         } while (tags.includes(uniqueTags[rand]))
         tags.push(uniqueTags[rand]);
     }
-    for (i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i++) {
         if (i === 0) {
             //if (items.mythic.forEach())
             do {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
             build.push(items.mythic[rand]);
-            mythicTags = items.mythic[rand].tags.slice(0, 3);
-            if (mythicTags.includes("Active") || mythicTags.includes("NonBootsMovement")) {
-                mythicTags.filter(tag => 
-                    (tag != "Active") ||
-                    (tag != "NonBootsMovement")
-                );
-            }
+            filtMythicTags = items.mythic[rand].tags.filter(tag => 
+                (tag !== "Active") &&
+                (tag !== "NonBootsMovement") &&
+                (tag !== "Stealth")
+            );
+            mythicTags = filtMythicTags.slice(0, 3);
             console.log(mythicTags);
         } else if (i === 1) {
             items.boots.forEach(boot => {
@@ -131,11 +143,17 @@ function randBuild (champ, items, uniqueTags) {
         } else {
             do {
                 rand = randNum(items.normal.length);
-            } while (build.includes(items.normal[rand]) || items.normal[rand].tags.some(tag => mythicTags.includes(tag)) === false)
+                count = countTags(mythicTags, items.normal[rand].tags)
+                console.log(count);
+                console.log(build);
+            } while (
+                build.includes(items.normal[rand]) === true ||
+                (count < 2 === true)
+            )
+            //items.normal[rand].tags.some(tag => mythicTags.includes(tag)) === false)
             build.push(items.normal[rand]);
         };
     };
-    console.log(tags)
     return build;
 }
 
