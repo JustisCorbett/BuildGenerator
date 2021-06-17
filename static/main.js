@@ -78,9 +78,10 @@ async function getItemData () {
 function randBuild (champ, items, uniqueTags) {
     uniqueTags = [...uniqueTags];
     let tags = [];
+    let mythicTags = [];
     let bootTags = [];
     let build = [];
-    let rand = 0
+    let rand = 0;
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
         items.normal = items.normal.filter(item =>
@@ -93,7 +94,6 @@ function randBuild (champ, items, uniqueTags) {
             (tag != "ManaRegen")
         );
     };
-    console.log("set tags")
     for (i = 0; i < 3; i++) {
         do {
             rand = randNum(uniqueTags.length);
@@ -107,14 +107,22 @@ function randBuild (champ, items, uniqueTags) {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
             build.push(items.mythic[rand]);
+            mythicTags = items.mythic[rand].tags;
+            if (mythicTags.includes("Active") || mythicTags.includes("NonBootsMovement")) {
+                mythicTags.filter(tag => 
+                    (tag != "Active") ||
+                    (tag != "NonBootsMovement")
+                );
+            }
+            console.log(mythicTags);
         } else if (i === 1) {
             items.boots.forEach(boot => {
                 bootTags.push(boot.tags);
             })
-            if (tags.some(tag => bootTags.includes(tag))) {
+            if (mythicTags.some(tag => bootTags.includes(tag))) {
                 do {
                     rand = randNum(items.boots.length);
-                } while (items.boots[rand].tags.some(tag => tags.includes(tag)) === false)
+                } while (items.boots[rand].tags.some(tag => mythicTags.includes(tag)) === false)
                 build.push(items.boots[rand]);
             } else {
                 let rand = randNum(items.boots.length);
@@ -123,7 +131,7 @@ function randBuild (champ, items, uniqueTags) {
         } else {
             do {
                 rand = randNum(items.normal.length);
-            } while (build.includes(items.normal[rand]) || items.normal[rand].tags.some(tag => tags.includes(tag)) === false)
+            } while (build.includes(items.normal[rand]) || items.normal[rand].tags.some(tag => mythicTags.includes(tag)) === false)
             build.push(items.normal[rand]);
         };
     };
