@@ -76,10 +76,9 @@ async function getItemData () {
 }
 
 function randBuild (champ, items, uniqueTags) {
+    uniqueTags = [...uniqueTags];
     let tags = [];
-    let mythicTags = [];
     let bootTags = [];
-    let normalTags = [];
     let build = [];
     let rand = 0
     if (champ.partype !== "Mana") {
@@ -88,12 +87,14 @@ function randBuild (champ, items, uniqueTags) {
             (item.tags.includes("Mana") === false) &&
             (item.tags.includes("ManaRegen") === false)
         );
-        [...uniqueTags].filter((tag =>
-            (tag != "Mana")) &&
+        console.log(uniqueTags);
+        uniqueTags.filter(tag =>
+            (tag != "Mana") &&
             (tag != "ManaRegen")
         );
     };
-    for (i = 0; i < 1; i++) {
+    console.log("set tags")
+    for (i = 0; i < 3; i++) {
         do {
             rand = randNum(uniqueTags.length);
         } while (tags.includes(uniqueTags[rand]))
