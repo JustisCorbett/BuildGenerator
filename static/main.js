@@ -107,7 +107,7 @@ function randBuild (champ, items, uniqueTags) {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
             build.push(items.mythic[rand]);
-            mythicTags = items.mythic[rand].tags;
+            mythicTags = items.mythic[rand].tags.slice(0, 3);
             if (mythicTags.includes("Active") || mythicTags.includes("NonBootsMovement")) {
                 mythicTags.filter(tag => 
                     (tag != "Active") ||
