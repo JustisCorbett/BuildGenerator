@@ -149,7 +149,7 @@ function renderBuildData(build) {
                 clonedChildren[i].src = "http://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
             }
             if (clonedChildren[i].classList.contains("tooltip-text")) {
-                clonedChildren[i].innerHTML = "<h3>" + item.name + "</h3>" + item.description;
+                clonedChildren[i].innerHTML = "<h2>" + item.name + "</h2>" + item.description + "<h4><gold>" + "Cost: " + item.gold.total + "</gold></h4>";
             }
         }
         document.getElementById("item-container").appendChild(clonedEl);

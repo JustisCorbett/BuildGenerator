@@ -17,6 +17,7 @@ body {
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    font-family: var(--text-font);
 }
 
 .champions-container {
@@ -74,19 +75,20 @@ body {
 
 .tooltip .tooltip-text {
     visibility: hidden;
-    width: 120px;
-    background-color: #555;
+    width: 250px;
+    background-color: #131712;
     color: #fff;
     text-align: center;
-    padding: 5px 0;
+    padding: 5px;
     border-radius: 6px;
-  
+    border: 2px solid tan;
+    font-size: 1.5rem;
     /* Position the tooltip text */
     position: absolute;
     z-index: 1;
     bottom: 125%;
     left: 50%;
-    margin-left: -60px;
+    margin-left: -125px;
   
     /* Fade in tooltip */
     opacity: 0;
@@ -108,7 +110,26 @@ body {
     visibility: visible;
     opacity: 1;
 }
-  
+
+attention {
+    color: tan;
+}
+
+physicaldamage {
+    color: crimson;
+}
+
+healing {
+    color: seagreen;
+}
+
+magicdamage {
+    color: #518CC4;
+}
+
+gold {
+    color: gold;
+}
 
 @media only screen and (max-width: 1000px) {
     :root {
