@@ -3,7 +3,7 @@
     --title-font: 'Mate SC', serif;
     --text-font:  'Merriweather', serif;
     --main-text-color: tan;
-    font-size: 10px;
+    font-size: 12px;
   }
 
 html {
@@ -18,6 +18,19 @@ body {
     align-items: flex-start;
     justify-content: center;
     font-family: var(--text-font);
+}
+
+.champ-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+#autoComplete {
+    font-size: 2rem;
 }
 
 .champions-container {

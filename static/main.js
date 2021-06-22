@@ -17,7 +17,6 @@ function renderChampData (champ) {
     let imageLink = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ.id + "_0.jpg";
     splash = document.getElementById("champ-splash");
     splash.src = imageLink;
-    console.log(imageLink);
     let champNameEl = document.getElementById("champion-name");
     let champTitleEl = document.getElementById("champion-title");
     champNameEl.textContent = champ.name;
@@ -29,6 +28,11 @@ async function randChamp () {
         let rand = randNum(Object.keys(champData).length);
         let champArray = Object.values(champData);
         let champ = champArray[rand];
+        let champNames = champArray.map(champ => {
+            return champ.name;
+        })
+        createSearch(champNames);
+        console.log(champNames);
         return champ;
     });
 }
@@ -101,7 +105,6 @@ function randBuild (champ, items, uniqueTags) {
             (item.tags.includes("Mana") === false) &&
             (item.tags.includes("ManaRegen") === false)
         );
-        console.log(uniqueTags);
         uniqueTags.filter(tag =>
             (tag != "Mana") &&
             (tag != "ManaRegen")
@@ -126,7 +129,6 @@ function randBuild (champ, items, uniqueTags) {
                 (tag !== "Stealth")
             );
             mythicTags = filtMythicTags.slice(0, 3);
-            console.log(mythicTags);
         } else if (i === 1) {
             items.boots.forEach(boot => {
                 bootTags.push(boot.tags);
@@ -144,8 +146,6 @@ function randBuild (champ, items, uniqueTags) {
             do {
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
-                console.log(count);
-                console.log(build);
             } while (
                 build.includes(items.normal[rand]) === true ||
                 (count < 2 === true)
@@ -176,13 +176,45 @@ function renderBuildData(build) {
 
 async function createBuild () {
     let champ = await randChamp();
-    console.log(champ);
     renderChampData(champ);
     let items = await getItemData();
-    console.log(items);
     build = randBuild(champ, items.items, items.uniqueTags);
-    console.log(build);
     renderBuildData(build);
+}
+
+function createSearch (champNames) {
+    const autoCompleteJS = new autoComplete({
+        placeHolder: "Search for Champion...",
+        data: {
+            src: champNames
+        },
+        resultsList: {
+            element: (list, data) => {
+                if (!data.results.length) {
+                    // Create "No Results" message element
+                    const message = document.createElement("div");
+                    // Add class to the created element
+                    message.setAttribute("class", "no_result");
+                    // Add message text content
+                    message.innerHTML = `<span>Found No Results for "${data.query}"</span>`;
+                    // Append message element to the results list
+                    list.prepend(message);
+                }
+            },
+            noResults: true,
+        },
+        resultItem: {
+            highlight: true
+        },
+        events: {
+            input: {
+                selection: (event) => {
+                    const selection = event.detail.selection.value;
+                    autoCompleteJS.input.value = selection;
+                }
+            }
+        }
+    });
 }
 
 window.onload = () => {
