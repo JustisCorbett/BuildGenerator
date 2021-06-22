@@ -23,18 +23,25 @@ function renderChampData (champ) {
     champTitleEl.textContent = champ.title;
 }
 
-async function randChamp () {
-    return getChampData().then(champData => {
-        let rand = randNum(Object.keys(champData).length);
-        let champArray = Object.values(champData);
-        let champ = champArray[rand];
-        let champNames = champArray.map(champ => {
-            return champ.name;
-        })
-        createSearch(champNames);
-        console.log(champNames);
-        return champ;
-    });
+async function randChamp (champName) {
+    if (champName !== undefined) {
+        return getChampData().then(champData => {
+            let champArray = Object.values(champData);
+            let champ = champArray.find(champ => champ.name === champName);
+            return champ;
+        });
+    } else {
+        return getChampData().then(champData => {
+            let rand = randNum(Object.keys(champData).length);
+            let champArray = Object.values(champData);
+            let champ = champArray[rand];
+            let champNames = champArray.map(champ => {
+                return champ.name;
+            })
+            createSearch(champNames);
+            return champ;
+        });
+    };  
 }
 
 async function getItemData () {
@@ -158,7 +165,11 @@ function randBuild (champ, items, uniqueTags) {
 }
 
 function renderBuildData(build) {
-    let blankEl = document.getElementsByClassName("item");
+    let oldEls = document.querySelectorAll(".item:not(.hidden)");
+    if(oldEls) {
+        oldEls.forEach(el => el.remove());
+    }
+    let blankEl = document.querySelectorAll(".item");
     build.forEach(item => {
         let clonedEl = blankEl[0].cloneNode(true);
         if (clonedEl.classList.contains("hidden")) {
@@ -177,8 +188,8 @@ function renderBuildData(build) {
     });
 }
 
-async function createBuild () {
-    let champ = await randChamp();
+async function createBuild (champName) {
+    let champ = await randChamp(champName);
     renderChampData(champ);
     let items = await getItemData();
     build = randBuild(champ, items.items, items.uniqueTags);
@@ -222,4 +233,9 @@ function createSearch (champNames) {
 
 window.onload = () => {
     createBuild();
+    document.getElementById("reroll").onclick = function () {
+        let champ = document.getElementById("autoComplete").value;
+        createBuild(champ);
+        console.log(champ)
+    };
 }
