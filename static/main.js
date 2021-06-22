@@ -161,6 +161,9 @@ function renderBuildData(build) {
     let blankEl = document.getElementsByClassName("item");
     build.forEach(item => {
         let clonedEl = blankEl[0].cloneNode(true);
+        if (clonedEl.classList.contains("hidden")) {
+            clonedEl.classList.remove("hidden");
+        }
         let clonedChildren = clonedEl.children;
         for (i = 0; i < clonedChildren.length; i++) {
             if (clonedChildren[i].classList.contains("item-image")) {
