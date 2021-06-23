@@ -236,6 +236,5 @@ window.onload = () => {
     document.getElementById("reroll").onclick = function () {
         let champ = document.getElementById("autoComplete").value;
         createBuild(champ);
-        console.log(champ)
     };
 }
