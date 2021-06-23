@@ -62,6 +62,18 @@ body {
     border-radius: 8px;
 }
 
+#reroll:hover {
+    background: lightgoldenrodyellow url("images/3884882911558424405-128.png") center no-repeat;
+    background-size: cover;
+    border: lightgoldenrodyellow 2px solid;
+}
+
+#reroll:active {
+    background: goldenrod url("images/3884882911558424405-128.png") center no-repeat;
+    background-size: cover;
+    border: goldenrod 2px solid;
+}
+
 .champ-selector {
     display: flex;
     flex-direction: row;
@@ -91,12 +103,12 @@ body {
     justify-content: space-between;
     align-items: flex-start;
     color: var(--main-text-color);
-    font-size: 4rem;
+    font-size: 2rem;
 }
 
 #champion-name {
     font-family: var(--title-font);
-    font-size: 7rem;
+    font-size: 6rem;
 }
 
 #champion-title {
@@ -110,10 +122,18 @@ body {
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
+    background-color: tan;
+    border-radius: 8px;
+    border: 3px solid tan;
+    margin-top: 2.5em;
 }
 
 .item {
     border: 3px solid tan;
+    border-radius: 8px;
+}
+
+img {
     border-radius: 8px;
 }
 
@@ -130,7 +150,7 @@ body {
 
 .tooltip .tooltip-text {
     visibility: hidden;
-    width: 250px;
+    width: 20em;
     background-color: #131712;
     color: #fff;
     text-align: center;
