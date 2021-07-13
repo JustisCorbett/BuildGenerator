@@ -54,22 +54,24 @@ body {
 }
 
 #reroll {
-    width: 3em;
-    background: tan url("images/3884882911558424405-128.png") center no-repeat;
+    width: auto;
+    background: tan;
     background-size: cover;
     border-radius: 1em;
     border: tan 2px solid;
     border-radius: 8px;
+    font-family: var(--title-font);
+    font-size: 2em;
 }
 
 #reroll:hover {
-    background: lightgoldenrodyellow url("images/3884882911558424405-128.png") center no-repeat;
+    background: lightgoldenrodyellow;
     background-size: cover;
     border: lightgoldenrodyellow 2px solid;
 }
 
 #reroll:active {
-    background: goldenrod url("images/3884882911558424405-128.png") center no-repeat;
+    background: goldenrod;
     background-size: cover;
     border: goldenrod 2px solid;
 }
@@ -78,6 +80,9 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: end;
+    border: tan 2px solid;
+    border-radius: 8px;
+    background: tan;
 }
 
 .champions-container {

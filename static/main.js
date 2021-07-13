@@ -24,7 +24,7 @@ function renderChampData (champ) {
 }
 
 async function randChamp (champName) {
-    if (champName !== undefined) {
+    if (champName !== undefined && champName !== "") {
         return getChampData().then(champData => {
             let champArray = Object.values(champData);
             let champ = champArray.find(champ => champ.name === champName);
