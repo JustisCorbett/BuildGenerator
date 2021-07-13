@@ -10,9 +10,10 @@ html {
     height: 100%;
 }
 
-body {
+#body {
     margin: 0px; 
-    background: #0e0e0e; 
+    background: url('images/oliver-chipping-sru-estshot.jpg') center no-repeat;
+    background-size: cover;
     height: 100%;
     display: flex;
     align-items: flex-start;
@@ -26,11 +27,13 @@ body {
 
 .champ-head {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 1rem;
+    margin-top: 1rem;
     width: 100%;
+    flex-wrap: nowrap;
 }
 
 #autoComplete {
@@ -86,12 +89,14 @@ body {
 }
 
 .champions-container {
-    height: 50%;
+    height: 100%;
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: start;
+    background: rgba(0, 0, 0, 0.65);
+    padding: 0em 3em;
 }
 
 #champ-splash {
@@ -106,7 +111,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     color: var(--main-text-color);
     font-size: 2rem;
 }
@@ -217,7 +222,6 @@ gold {
     }
 
     .champions-container {
-        height: 75%;
         width: 75%;
     }
 }
