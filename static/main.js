@@ -4,7 +4,7 @@ function randNum (max) {
 }
 
 async function getChampData () {
-    let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/11.11.1/data/en_US/champion.json");
+    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/11.11.1/data/en_US/champion.json");
     if (response.ok) {
         const champData = await response.json();
         return champData.data;
@@ -14,7 +14,7 @@ async function getChampData () {
 }
 
 function renderChampData (champ) {
-    let imageLink = "http://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ.id + "_0.jpg";
+    let imageLink = "https://ddragon.leagueoflegends.com/cdn/img/champion/splash/" + champ.id + "_0.jpg";
     splash = document.getElementById("champ-splash");
     splash.src = imageLink;
     let champNameEl = document.getElementById("champion-name");
@@ -45,7 +45,7 @@ async function randChamp (champName) {
 }
 
 async function getItemData () {
-    let response = await fetch ("http://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/item.json");
+    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/item.json");
     let tags = [];
     if (response.ok) {
         const itemData = await response.json();
@@ -178,7 +178,7 @@ function renderBuildData(build) {
         let clonedChildren = clonedEl.children;
         for (i = 0; i < clonedChildren.length; i++) {
             if (clonedChildren[i].classList.contains("item-image")) {
-                clonedChildren[i].src = "http://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
+                clonedChildren[i].src = "https://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
             }
             if (clonedChildren[i].classList.contains("tooltip-text")) {
                 clonedChildren[i].innerHTML = "<h2>" + item.name + "</h2>" + item.description + "<h4><gold>" + "Cost: " + item.gold.total + "</gold></h4>";
