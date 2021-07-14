@@ -71,6 +71,7 @@ html {
     background: lightgoldenrodyellow;
     background-size: cover;
     border: lightgoldenrodyellow 2px solid;
+    cursor: pointer;
 }
 
 #reroll:active {
