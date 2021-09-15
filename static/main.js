@@ -137,13 +137,16 @@ function randBuild (champ, items, uniqueTags) {
             );
             mythicTags = filtMythicTags.slice(0, 3);
         } else if (i === 1) {
-            items.boots.forEach(boot => {
-                bootTags.push(boot.tags);
-            })
-            if (mythicTags.some(tag => bootTags.includes(tag))) {
+            // items.boots.forEach(boot => {
+            //     bootTags.push(boot.tags);
+            // })
+            if (filtMythicTags.some(tag => items.boots.some(boot => {
+                return boot.tags.includes(tag)
+            }))) {
                 do {
+                    console.log("TRUEE")
                     rand = randNum(items.boots.length);
-                } while (items.boots[rand].tags.some(tag => mythicTags.includes(tag)) === false)
+                } while (items.boots[rand].tags.some(tag => filtMythicTags.includes(tag)) === false)
                 build.push(items.boots[rand]);
             } else {
                 let rand = randNum(items.boots.length);
