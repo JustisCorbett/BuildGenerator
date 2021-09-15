@@ -161,7 +161,10 @@ function randBuild (champ, items, uniqueTags) {
             build.push(items.normal[rand]);
         };
     };
-    return build;
+    return {
+        items: build,
+        tags: mythicTags
+    };
 }
 
 function renderBuildData(build) {
@@ -170,7 +173,7 @@ function renderBuildData(build) {
         oldEls.forEach(el => el.remove());
     }
     let blankEl = document.querySelectorAll(".item");
-    build.forEach(item => {
+    build.items.forEach(item => {
         let clonedEl = blankEl[0].cloneNode(true);
         if (clonedEl.classList.contains("hidden")) {
             clonedEl.classList.remove("hidden");
