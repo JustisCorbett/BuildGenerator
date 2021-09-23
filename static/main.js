@@ -1,10 +1,21 @@
+
+async function getVersionData() {
+    let response = await fetch ("https://ddragon.leagueoflegends.com/api/versions.json")
+    if (response.ok) {
+        const versionData = await response.json();
+        return versionData[0];
+    } else {
+        alert("Could not get patch data. Refresh to try again.");
+    }
+}
+
 function randNum (max) {
     let rand = (Math.floor(Math.random() * max));
     return rand;
 }
 
 async function getChampData () {
-    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/11.11.1/data/en_US/champion.json");
+    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/champion.json");
     if (response.ok) {
         const champData = await response.json();
         return champData.data;
@@ -45,7 +56,7 @@ async function randChamp (champName) {
 }
 
 async function getItemData () {
-    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/11.12.1/data/en_US/item.json");
+    let response = await fetch ("https://ddragon.leagueoflegends.com/cdn/" + version + "/data/en_US/item.json");
     let tags = [];
     if (response.ok) {
         const itemData = await response.json();
@@ -57,7 +68,7 @@ async function getItemData () {
             (item.hasOwnProperty("inStore") === false) &&
             (item.tags.includes("Consumable") === false) &&
             (item.tags.includes("Trinket") === false) &&
-            ((item.hasOwnProperty("into") === false) || (item.into[0] >= 7000)) &&
+            ((item.hasOwnProperty("into") === false)) &&
             (item.tags.includes("Lane") === false) &&
             (item.tags.includes("Jungle") === false)
         );
@@ -69,10 +80,13 @@ async function getItemData () {
         });
         let items = {items: [], uniqueTags: []};
         items.uniqueTags = [...new Set(tags)];
-        items.items.mythic = filteredItemArray.filter(item => item.hasOwnProperty("into"));
+        items.items.mythic = filteredItemArray.filter(item => 
+            (item.description.search("Mythic") !== -1)
+            );
         items.items.normal = filteredItemArray.filter(item => 
             (item.hasOwnProperty("into") === false) &&
-            (item.tags.includes("Boots") === false)
+            (item.tags.includes("Boots") === false) &&
+            (item.description.search("Mythic") === -1)
             );
         items.items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
         // let filteredTags = {
@@ -80,6 +94,7 @@ async function getItemData () {
         //     defense: ["Health", "Armor", "HealthRegen", "SpellBlock"],
         //     magic: ["SpellDamage", "MagicPenetration", "SpellVamp", "OnHit"]
         // }
+        console.log(items)
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
@@ -129,6 +144,7 @@ function randBuild (champ, items, uniqueTags) {
             do {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
+            console.log(items.mythic[rand])
             build.push(items.mythic[rand]);
             filtMythicTags = items.mythic[rand].tags.filter(tag => 
                 (tag !== "Active") &&
@@ -144,7 +160,6 @@ function randBuild (champ, items, uniqueTags) {
                 return boot.tags.includes(tag)
             }))) {
                 do {
-                    console.log("TRUEE")
                     rand = randNum(items.boots.length);
                 } while (items.boots[rand].tags.some(tag => filtMythicTags.includes(tag)) === false)
                 build.push(items.boots[rand]);
@@ -153,14 +168,20 @@ function randBuild (champ, items, uniqueTags) {
                 build.push(items.boots[rand]);
             }
         } else {
+            let counter = 0;
             do {
+                counter += 1;
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
+                console.log(counter)
+                if (counter > 2000) {
+                    break;
+                }
             } while (
                 build.includes(items.normal[rand]) === true ||
-                (count < 2 === true)
+                (count < 2) === true ||
+                (count < 1) === true && (counter < 1000) === true
             )
-            //items.normal[rand].tags.some(tag => mythicTags.includes(tag)) === false)
             build.push(items.normal[rand]);
         };
     };
@@ -184,7 +205,7 @@ function renderBuildData(build) {
         let clonedChildren = clonedEl.children;
         for (i = 0; i < clonedChildren.length; i++) {
             if (clonedChildren[i].classList.contains("item-image")) {
-                clonedChildren[i].src = "https://ddragon.leagueoflegends.com/cdn/11.12.1/img/item/" + item.image.full;
+                clonedChildren[i].src = "https://ddragon.leagueoflegends.com/cdn/"+ version +"/img/item/" + item.image.full;
             }
             if (clonedChildren[i].classList.contains("tooltip-text")) {
                 clonedChildren[i].innerHTML = "<h2>" + item.name + "</h2>" + item.description + "<h4><gold>" + "Cost: " + item.gold.total + "</gold></h4>";
@@ -195,6 +216,8 @@ function renderBuildData(build) {
 }
 
 async function createBuild (champName) {
+    version = await getVersionData();
+    console.log(version)
     let champ = await randChamp(champName);
     renderChampData(champ);
     let items = await getItemData();
