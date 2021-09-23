@@ -113,6 +113,21 @@ function countTags (arr1, arr2) {
     return count;
 }
 
+function checkPassives (arr1, arr2) {
+    if (arr2.search("<passive>") === true) {
+        let result = arr2.match(/\<passive\>(.*)\<\/passive\>/g);
+        console.log(result)
+        result.forEach(passive => 
+            arr1.forEach(itemPassive => {
+                if (passive === itemPassive) {
+                    return false;
+                }
+            }))
+    } else {
+        return true;
+    }
+}
+
 function randBuild (champ, items, uniqueTags) {
     uniqueTags = [...uniqueTags];
     let tags = [];
@@ -144,14 +159,17 @@ function randBuild (champ, items, uniqueTags) {
             do {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
-            console.log(items.mythic[rand])
             build.push(items.mythic[rand]);
             filtMythicTags = items.mythic[rand].tags.filter(tag => 
                 (tag !== "Active") &&
                 (tag !== "NonBootsMovement") &&
                 (tag !== "Stealth")
             );
-            mythicTags = filtMythicTags.slice(0, 3);
+            if (items.mythic[rand].name == "Eclipse") {
+                mythicTags = filtMythicTags.slice(0, 4);
+            } else {
+                mythicTags = filtMythicTags.slice(0, 3);
+            }
         } else if (i === 1) {
             // items.boots.forEach(boot => {
             //     bootTags.push(boot.tags);
@@ -169,12 +187,15 @@ function randBuild (champ, items, uniqueTags) {
             }
         } else {
             let counter = 0;
+            let uniquePassives = []
             do {
                 counter += 1;
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
+                console.log(items.normal[rand])
+                passiveCount = checkPassives(uniquePassives, items.normal[rand].description)
                 console.log(counter)
-                if (counter > 2000) {
+                if (counter > 2000 && build.includes(items.normal[rand]) === false) {
                     break;
                 }
             } while (
@@ -182,6 +203,12 @@ function randBuild (champ, items, uniqueTags) {
                 (count < 2) === true ||
                 (count < 1) === true && (counter < 1000) === true
             )
+            if (items.normal[rand].description.search("<passive>") === true) {
+                let result = items.normal[rand].description.match(/\<passive\>(.*)\<\/passive\>/g);
+                
+                result.forEach(match => uniquePassives.push(match))
+            }
+            console.log(uniquePassives)
             build.push(items.normal[rand]);
         };
     };
