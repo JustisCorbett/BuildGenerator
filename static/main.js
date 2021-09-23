@@ -170,6 +170,7 @@ function randBuild (champ, items, uniqueTags) {
             } else {
                 mythicTags = filtMythicTags.slice(0, 3);
             }
+            console.log(mythicTags)
         } else if (i === 1) {
             // items.boots.forEach(boot => {
             //     bootTags.push(boot.tags);
@@ -201,7 +202,7 @@ function randBuild (champ, items, uniqueTags) {
             } while (
                 build.includes(items.normal[rand]) === true ||
                 (count < 2) === true ||
-                (count < 1) === true && (counter < 1000) === true
+                (((count < 1) === true) && ((counter < 1000) === true))
             )
             if (items.normal[rand].description.search("<passive>") === true) {
                 let result = items.normal[rand].description.match(/\<passive\>(.*)\<\/passive\>/g);
