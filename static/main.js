@@ -68,7 +68,6 @@ async function getItemData () {
             (item.hasOwnProperty("inStore") === false) &&
             (item.tags.includes("Consumable") === false) &&
             (item.tags.includes("Trinket") === false) &&
-            ((item.hasOwnProperty("into") === false)) &&
             (item.tags.includes("Lane") === false) &&
             (item.tags.includes("Jungle") === false)
         );
@@ -81,12 +80,12 @@ async function getItemData () {
         let items = {items: [], uniqueTags: []};
         items.uniqueTags = [...new Set(tags)];
         items.items.mythic = filteredItemArray.filter(item => 
-            (item.description.search("Mythic") !== -1)
+            (item.description.indexOf("Mythic") !== -1)
             );
         items.items.normal = filteredItemArray.filter(item => 
             (item.hasOwnProperty("into") === false) &&
             (item.tags.includes("Boots") === false) &&
-            (item.description.search("Mythic") === -1)
+            (item.description.indexOf("Mythic") === -1)
             );
         items.items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
         // let filteredTags = {
@@ -94,7 +93,7 @@ async function getItemData () {
         //     defense: ["Health", "Armor", "HealthRegen", "SpellBlock"],
         //     magic: ["SpellDamage", "MagicPenetration", "SpellVamp", "OnHit"]
         // }
-        console.log(items)
+        console.log(filteredItemArray, items)
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
