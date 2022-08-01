@@ -88,12 +88,6 @@ async function getItemData () {
             (item.description.indexOf("Mythic") === -1)
             );
         items.items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
-        // let filteredTags = {
-        //     attack: ["Damage", "AttackSpeed", "CriticalStrike", "ArmorPenetration", "Lifesteal"],
-        //     defense: ["Health", "Armor", "HealthRegen", "SpellBlock"],
-        //     magic: ["SpellDamage", "MagicPenetration", "SpellVamp", "OnHit"]
-        // }
-        console.log(filteredItemArray, items)
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
@@ -115,7 +109,6 @@ function countTags (arr1, arr2) {
 function checkPassives (arr1, arr2) {
     if (arr2.search("<passive>") === true) {
         let result = arr2.match(/\<passive\>(.*)\<\/passive\>/g);
-        console.log(result)
         result.forEach(passive => 
             arr1.forEach(itemPassive => {
                 if (passive === itemPassive) {
@@ -169,7 +162,6 @@ function randBuild (champ, items, uniqueTags) {
             } else {
                 mythicTags = filtMythicTags.slice(0, 3);
             }
-            console.log(mythicTags)
         } else if (i === 1) {
             // items.boots.forEach(boot => {
             //     bootTags.push(boot.tags);
@@ -192,9 +184,7 @@ function randBuild (champ, items, uniqueTags) {
                 counter += 1;
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
-                console.log(items.normal[rand])
                 passiveCount = checkPassives(uniquePassives, items.normal[rand].description)
-                console.log(counter)
                 if (counter > 2000 && build.includes(items.normal[rand]) === false) {
                     break;
                 }
@@ -208,7 +198,6 @@ function randBuild (champ, items, uniqueTags) {
                 
                 result.forEach(match => uniquePassives.push(match))
             }
-            console.log(uniquePassives)
             build.push(items.normal[rand]);
         };
     };
@@ -244,7 +233,6 @@ function renderBuildData(build) {
 
 async function createBuild (champName) {
     version = await getVersionData();
-    console.log(version)
     let champ = await randChamp(champName);
     renderChampData(champ);
     let items = await getItemData();
