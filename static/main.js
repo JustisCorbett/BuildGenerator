@@ -61,6 +61,7 @@ async function getItemData () {
     if (response.ok) {
         const itemData = await response.json();
         let itemArray = Object.values(itemData.data);
+        //filter for actual buildable items
         let filteredItemArray = itemArray.filter(item =>
             (item.hasOwnProperty("requiredAlly") === false) &&
             (item.hasOwnProperty("requiredChampion") === false) &&
@@ -79,15 +80,20 @@ async function getItemData () {
         });
         let items = {items: [], uniqueTags: []};
         items.uniqueTags = [...new Set(tags)];
+        //filter for mythic items
         items.items.mythic = filteredItemArray.filter(item => 
             (item.description.indexOf("Mythic") !== -1)
             );
+        //filter for legendary items
         items.items.normal = filteredItemArray.filter(item => 
             (item.hasOwnProperty("into") === false) &&
             (item.tags.includes("Boots") === false) &&
             (item.description.indexOf("Mythic") === -1)
             );
-        items.items.boots = filteredItemArray.filter(item => item.tags.includes("Boots"));
+        //filter for boots
+        items.items.boots = filteredItemArray.filter(item => 
+            (item.hasOwnProperty("into") === false) &&
+            (item.tags.includes("Boots")));
         return items;
     } else { 
         alert("Could not get Item data. Refresh to try again.")
@@ -106,6 +112,7 @@ function countTags (arr1, arr2) {
     return count;
 }
 
+//prevent unique passive stacking
 function checkPassives (arr1, arr2) {
     if (arr2.search("<passive>") === true) {
         let result = arr2.match(/\<passive\>(.*)\<\/passive\>/g);
@@ -124,10 +131,10 @@ function randBuild (champ, items, uniqueTags) {
     uniqueTags = [...uniqueTags];
     let tags = [];
     let mythicTags = [];
-    let bootTags = [];
     let build = [];
     let rand = 0;
     let count = 0;
+    //check if champ uses mana to prevent unusable items
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
         items.normal = items.normal.filter(item =>
@@ -147,7 +154,6 @@ function randBuild (champ, items, uniqueTags) {
     }
     for (let i = 0; i < 6; i++) {
         if (i === 0) {
-            //if (items.mythic.forEach())
             do {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
@@ -163,9 +169,6 @@ function randBuild (champ, items, uniqueTags) {
                 mythicTags = filtMythicTags.slice(0, 3);
             }
         } else if (i === 1) {
-            // items.boots.forEach(boot => {
-            //     bootTags.push(boot.tags);
-            // })
             if (filtMythicTags.some(tag => items.boots.some(boot => {
                 return boot.tags.includes(tag)
             }))) {
