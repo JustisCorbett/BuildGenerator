@@ -1,5 +1,6 @@
 
 async function getVersionData() {
+    // get patch version for correct irem info
     let response = await fetch ("https://ddragon.leagueoflegends.com/api/versions.json")
     if (response.ok) {
         const versionData = await response.json();
@@ -154,6 +155,7 @@ function randBuild (champ, items, uniqueTags) {
     }
     for (let i = 0; i < 6; i++) {
         if (i === 0) {
+            // get a random mythic item and get tags from it to find synergistic legendary items
             do {
                 rand = randNum(items.mythic.length);
             } while (items.mythic[rand].tags.some(tag => tags.includes(tag)) === false)
@@ -210,6 +212,7 @@ function randBuild (champ, items, uniqueTags) {
     };
 }
 
+//render item elements
 function renderBuildData(build) {
     let oldEls = document.querySelectorAll(".item:not(.hidden)");
     if(oldEls) {
