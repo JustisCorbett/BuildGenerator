@@ -187,6 +187,7 @@ function randBuild (champ, items, uniqueTags) {
         } else {
             let counter = 0;
             let uniquePassives = []
+            //TODO: check for unique passive clashes
             do {
                 counter += 1;
                 rand = randNum(items.normal.length);
