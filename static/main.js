@@ -114,11 +114,13 @@ function countTags (arr1, arr2) {
 }
 
 //prevent unique passive stacking
-function checkPassives (arr1, arr2) {
-    if (arr2.search("<passive>") === true) {
-        let result = arr2.match(/\<passive\>(.*)\<\/passive\>/g);
+function checkPassives (uniquePassives, itemDesc) {
+    if (itemDesc.indexOf("<passive>") !== -1) {
+        console.log(itemDesc)
+        let result = itemDesc.match(/\<passive\>[a-zA-Z ']*\:/g);
+        console.log("result " + result)
         result.forEach(passive => 
-            arr1.forEach(itemPassive => {
+            uniquePassives.forEach(itemPassive => {
                 if (passive === itemPassive) {
                     return false;
                 }
@@ -190,6 +192,7 @@ function randBuild (champ, items, uniqueTags) {
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
                 passiveCount = checkPassives(uniquePassives, items.normal[rand].description)
+                console.log("passive count" + passiveCount)
                 if (counter > 2000 && build.includes(items.normal[rand]) === false) {
                     break;
                 }
@@ -198,8 +201,10 @@ function randBuild (champ, items, uniqueTags) {
                 (count < 2) === true ||
                 (((count < 1) === true) && ((counter < 1000) === true))
             )
-            if (items.normal[rand].description.search("<passive>") === true) {
-                let result = items.normal[rand].description.match(/\<passive\>(.*)\<\/passive\>/g);
+            // check for unique passives and add them to list of unique passives to check new items against
+            if (items.normal[rand].description.indexOf("<passive>") !== -1) {
+                console.log("unique passives found")
+                let result = items.normal[rand].description.match(/\<passive\>[a-zA-Z ']*\:/g);
                 
                 result.forEach(match => uniquePassives.push(match))
             }
