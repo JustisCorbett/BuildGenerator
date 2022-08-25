@@ -137,6 +137,8 @@ function randBuild (champ, items, uniqueTags) {
     let build = [];
     let rand = 0;
     let count = 0;
+    let uniquePassives = [];
+    let isNotUniqueItem = false;
     //check if champ uses mana to prevent unusable items
     if (champ.partype !== "Mana") {
         items.mythic = items.mythic.filter(item => (item.tags.includes("Mana") === false));
@@ -186,30 +188,34 @@ function randBuild (champ, items, uniqueTags) {
             }
         } else {
             let counter = 0;
-            let uniquePassives = []
-            //TODO: check for unique passive clashes
             do {
                 counter += 1;
                 rand = randNum(items.normal.length);
                 count = countTags(mythicTags, items.normal[rand].tags)
-                passiveCount = checkPassives(uniquePassives, items.normal[rand].description)
-                console.log("passive count" + passiveCount)
+                if (items.normal[rand].description.indexOf("<passive>") !== -1) {
+                    console.log("unique passives found")
+                    let result = items.normal[rand].description.match(/\<passive\>[a-zA-Z ']*\:/g);
+                    isNotUniqueItem = result.some(passive => uniquePassives.indexOf(passive) >= 0);
+                    if (isNotUniqueItem || (count < 2) === true || (((count < 1) === true) && ((counter < 1000) === true))) {
+                        console.log(uniquePassives, isNotUniqueItem, items.normal[rand].description)
+                        continue;
+                    } else {
+                        result.forEach(match => uniquePassives.push(match))
+                    }
+                }
                 if (counter > 2000 && build.includes(items.normal[rand]) === false) {
                     break;
                 }
             } while (
                 build.includes(items.normal[rand]) === true ||
                 (count < 2) === true ||
-                (((count < 1) === true) && ((counter < 1000) === true))
+                (((count < 1) === true) && ((counter < 1000) === true)) ||
+                isNotUniqueItem === true
             )
             // check for unique passives and add them to list of unique passives to check new items against
-            if (items.normal[rand].description.indexOf("<passive>") !== -1) {
-                console.log("unique passives found")
-                let result = items.normal[rand].description.match(/\<passive\>[a-zA-Z ']*\:/g);
-                
-                result.forEach(match => uniquePassives.push(match))
-            }
+            
             build.push(items.normal[rand]);
+            console.log(uniquePassives)
         };
     };
     return {
