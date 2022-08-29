@@ -23,6 +23,30 @@ html {
     justify-content: center;
     font-family: var(--text-font);
 }
+.title-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem;
+    border-bottom: tan solid 2px;
+    width: 100%;
+}
+
+.title {
+    font-family: var(--title-font);
+    color: tan;
+    font-size: 5rem;
+    margin: 0.5rem;
+
+}
+
+.secondary-title {
+    font-family: var(--text-font);
+    color: tan;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
 
 .hidden {
     display: none !important;
@@ -93,14 +117,33 @@ html {
 }
 
 .champions-container {
-    height: 100%;
+    height: 50%;
     width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: start;
-    background: rgba(0, 0, 0, 0.75);
-    padding: 0em 3em;
+    justify-content: center;
+    padding: 0em 1em;
+}
+
+.data-container {
+    height: 50%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0em 1em;
+}
+
+.main-container {
+    height: 100%;
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(0, 0, 0, 0.6);
 }
 
 #champ-splash {
@@ -140,7 +183,7 @@ html {
     background-color: tan;
     border: 1px solid tan;
     border-radius: 8px;
-    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .item {
