@@ -7,17 +7,15 @@
   }
 
 html {
-    height: 100vh;
     margin: 0px;
     padding: 0px;
-    overflow: hidden;
 }
 
 #body {
     margin: 0px; 
     background: url('images/legends_of_runeterra.jpg') center no-repeat;
     background-size: cover;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -138,6 +136,7 @@ html {
 
 .main-container {
     height: 100%;
+    min-height: 100vh;
     width: 75%;
     display: flex;
     flex-direction: column;
@@ -160,12 +159,12 @@ html {
     justify-content: space-between;
     align-items: center;
     color: var(--main-text-color);
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 #champion-name {
     font-family: var(--title-font);
-    font-size: 5rem;
+    font-size: 4rem;
 }
 
 #champion-title {
@@ -183,7 +182,7 @@ html {
     background-color: tan;
     border: 1px solid tan;
     border-radius: 8px;
-    margin-bottom: 2em;
+    margin: 2em;
 }
 
 .item {
@@ -272,11 +271,16 @@ gold {
     .champions-container {
         width: 75%;
     }
+    .main-container {
+        width: 90%;
+    }
 }
 
 @media only screen and (max-width: 600px) {
     :root {
         font-size: 6px;
     }
-
+    .main-container {
+        width: 100%;
+    }
 }
