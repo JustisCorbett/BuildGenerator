@@ -283,4 +283,7 @@ gold {
     .main-container {
         width: 100%;
     }
+    #item-container {
+        width: 100%;
+    }
 }
